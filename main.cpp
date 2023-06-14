@@ -2,15 +2,14 @@
 #include<iostream>
 #include<Windows.h>
 #include"threadPool.hpp"
-void func(void* arg) {
-    int* num = (int*)arg;
-    std::cout << "idï¼š" << std::this_thread::get_id() << *num << std::endl;
-    Sleep(1000);
+void func(void* arg) {         //Ö¸ÕëËù´æ·ÅµÄÐÅÏ¢³ýÁË±¾Éí¼ÇÂ¼µÄÊ×µØÖ·Íâ,»¹°üÀ¨ÆäÀàÐÍ,±àÒëÆ÷Í¨¹ýÖ¸ÕëµÄÀàÐÍºÍÖ¸Õë´æ·ÅµÄÊ×µØÖ·ÔÚ´ÓÄÚ´æÖÐ¶ÁÈ¡¶ÔÓ¦µÄÊý¾Ý
+    int i = *(int*)arg;
+    std::cout << "id:"<< std::this_thread::get_id() <<":"<< i << std::endl;
 }
 int main()
 {
     ThreadPool threadPool(5, 10);
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 20; i++) {
         int* num = new int(10);
         *num += i;
         threadPool.addTask(func, num);

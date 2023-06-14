@@ -16,6 +16,9 @@ using callback = void(*)(void* arg);//一个泛型的函数指针类型
 class Task {
 public:
 	Task(callback func, void* arg);
+	void run(); //重新封装了线程任务函数,用来调用任务函数
+	
+private:
 	callback function;//工作函数
 	void* arg;//工作函数的参数
 };
@@ -33,12 +36,12 @@ private:
 	int exitNum;//要退出的线程数
 	mutex poolMutex_; //原始poolMutex锁
 	mutex busyMutex_;//原始busyMutex锁
-	std::unique_lock<mutex> poolMutex;//线程池锁
-	std::unique_lock<mutex> busyMutex;//busyNum锁
+	//std::unique_lock<mutex> poolMutex;//线程池锁
+	//std::unique_lock<mutex> busyMutex;//busyNum锁
 	bool shutdown; //是不是要销毁线程池，销毁为true，不销毁为false
 	condition_variable cond_Var;//条件变量，用来传递信号,或者阻塞线程
-	static void manager(void* arg);// 管理者线程所执行的函数，用来查看，管理线程
-	static void worker(void* arg);//工作者线程所执行的函数
+	void manager();// 管理者线程所执行的函数，用来查看，管理线程
+	void worker();//工作者线程所执行的函数
 public:
 	ThreadPool(int minNum, int maxNum);//线程池初始化
 	~ThreadPool();//线程池销毁
